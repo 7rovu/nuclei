@@ -68,3 +68,8 @@ func (s *ScanContext) LogError(err error) {
 		e.InternalEvent["error"] = errorMessage
 	}
 }
+
+// 7rovu change code
+func (s *ScanContext) GetEvents() []*output.InternalWrappedEvent {
+	return s.events
+}
