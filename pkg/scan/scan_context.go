@@ -69,7 +69,7 @@ func (s *ScanContext) LogError(err error) {
 	}
 }
 
-// 7rovu change code
-func (s *ScanContext) GetEvents() []*output.InternalWrappedEvent {
+// 7rovu add code
+func (s *ScanContext) GetEvent() []*output.InternalWrappedEvent {
 	return s.events
 }

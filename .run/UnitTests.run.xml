@@ -3,6 +3,7 @@
     <module name="nuclei" />
     <working_directory value="$PROJECT_DIR$/v2" />
     <go_parameters value="-i" />
+    <parameters value="-h" />
     <kind value="DIRECTORY" />
     <directory value="$PROJECT_DIR$/" />
     <filePath value="$PROJECT_DIR$" />
