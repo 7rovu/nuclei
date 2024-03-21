@@ -312,36 +312,3 @@ func (e *ClusterExecuter) ExecuteWithResults(ctx *scan.ScanContext) ([]*output.R
 	}
 	return scanCtx.GenerateResult(), err
 }
-
-// 7rovu change code
-func ExecuteWithResults2(e *ClusterExecuter, ctx *scan.ScanContext) ([]*output.InternalEvent, []string, error) {
-	//scanCtx := scan.NewScanContext(ctx.Input)
-	var internalEvents []*output.InternalEvent
-	var templateIds []string
-
-	dynamicValues := make(map[string]interface{})
-
-	inputItem := ctx.Input.Clone()
-	if e.options.InputHelper != nil && ctx.Input.MetaInput.Input != "" {
-		if inputItem.MetaInput.Input = e.options.InputHelper.Transform(ctx.Input.MetaInput.Input, e.templateType); ctx.Input.MetaInput.Input == "" {
-			return nil, nil, nil
-		}
-	}
-	err := e.requests.ExecuteWithResults(inputItem, dynamicValues, nil, func(event *output.InternalWrappedEvent) {
-		if event.InternalEvent != nil {
-			internalEvents = append(internalEvents, &event.InternalEvent)
-			//internalEvent = event.InternalEvent
-		}
-		for _, operator := range e.operators {
-			result, matched := operator.operator.Execute(event.InternalEvent, e.requests.Match, e.requests.Extract, e.options.Options.Debug || e.options.Options.DebugResponse)
-			if matched && result != nil {
-				templateIds = append(templateIds, operator.templateID)
-			}
-		}
-	})
-
-	if err != nil && e.options.HostErrorsCache != nil {
-		e.options.HostErrorsCache.MarkFailed(ctx.Input.MetaInput.Input, err)
-	}
-	return internalEvents, templateIds, err
-}
